@@ -76,6 +76,88 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.pink.shade600,
         foregroundColor: Colors.white,
       ),
+      // MENÚ HAMBURGUESA (DRAWER LATERAL)
+      // Al incluir 'drawer', Flutter dibuja automáticamente el botón
+      // hamburguesa en el AppBar, sin necesidad de agregarlo a mano.
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.pink.shade600),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 26,
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.apps, color: Colors.pink, size: 28),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Mi app con flutter',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Retos prácticos • Semana 2',
+                    style: TextStyle(color: Colors.white70, fontSize: 11),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Menú Principal'),
+              onTap: () => Navigator.pop(context), // Cierra el Drawer
+            ),
+            const Divider(),
+            // Genera un acceso directo a cada reto desde el propio Drawer.
+            ...opciones.map((opcion) {
+              return ListTile(
+                leading: Icon(opcion.icono, color: opcion.color),
+                title: Text(opcion.titulo),
+                onTap: () {
+                  Navigator.pop(context); // Cierra el Drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: opcion.builder),
+                  );
+                },
+              );
+            }),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('Acerca de la App'),
+              onTap: () {
+                Navigator.pop(context); // Cierra el Drawer antes del diálogo
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Acerca de esta App'),
+                    content: const Text(
+                      'App construida en Flutter con los 4 retos de la '
+                      'Semana 2 (Cotizador, Encuesta, Citas y Propinas) '
+                      'más el Directorio de Médicos.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cerrar'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: opciones.length,

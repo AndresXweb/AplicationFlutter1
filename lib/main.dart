@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/directorio_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MiApp());
@@ -11,10 +11,13 @@ class MiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Directorio de Médicos',
+      title: 'Mi App Flutter',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.indigo),
-      home: const DirectorioScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+        useMaterial3: true,
+      ),
+      home: const HomeScreen(),
     );
   }
 }

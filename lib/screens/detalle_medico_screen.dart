@@ -27,20 +27,25 @@ class _DetalleMedicoScreenState extends State<DetalleMedicoScreen> {
   }
 
   void _reservarCita() {
-    if (!widget.medico.disponibleHoy) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Este médico no está disponible hoy')),
-      );
-      return;
-    }
-    if (_fechaSeleccionada == null) {
+    final fecha = _fechaSeleccionada;
+    if (fecha == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Selecciona una fecha antes de reservar')),
       );
       return;
     }
-    final f = _fechaSeleccionada!;
-    final fechaTexto = '${f.day}/${f.month}/${f.year}';
+
+    final hoy = DateTime.now();
+    final esHoy = fecha.year == hoy.year && fecha.month == hoy.month && fecha.day == hoy.day;
+
+    if (esHoy && !widget.medico.disponibleHoy) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Este médico no está disponible hoy, elige otra fecha')),
+      );
+      return;
+    }
+
+    final fechaTexto = '${fecha.day}/${fecha.month}/${fecha.year}';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -101,7 +106,7 @@ class _DetalleMedicoScreenState extends State<DetalleMedicoScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: medico.disponibleHoy ? _reservarCita : null,
+                onPressed: _reservarCita,
                 child: const Text('Reservar Cita'),
               ),
             ),

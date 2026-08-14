@@ -27,6 +27,12 @@ class _DetalleMedicoScreenState extends State<DetalleMedicoScreen> {
   }
 
   void _reservarCita() {
+    if (!widget.medico.disponibleHoy) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Este médico no está disponible hoy')),
+      );
+      return;
+    }
     if (_fechaSeleccionada == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Selecciona una fecha antes de reservar')),
@@ -95,7 +101,7 @@ class _DetalleMedicoScreenState extends State<DetalleMedicoScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _reservarCita,
+                onPressed: medico.disponibleHoy ? _reservarCita : null,
                 child: const Text('Reservar Cita'),
               ),
             ),
